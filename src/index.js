@@ -1,7 +1,6 @@
 'use strict';
 
-var express = require('express');
-var server = express();
+var server = require('express')();
 var bodyParser = require('body-parser');
 var request = require('request');
 var expressJwt = require('express-jwt');
@@ -11,11 +10,17 @@ var imageHandler = require('./imageHandler');
 var createDeckHandler = require('./createDeckHandler');
 var decksHandler = require('./decksHandler');
 var authenticateHandler = require('./authenticateHandler');
-let HandlerRegistrar = require('./handlerRegistrar');
 var mtgJson = require('../mtgjson.json');
 
-console.log('Starting up server...');
+let bunyan = require('bunyan');
+let log = bunyan.createLogger({ name: 'rune' });
+let HandlerRegistrar = require('./handlerRegistrar');
+let requestLogger = require('./request-logger');
 
+
+log.info('Starting up server...');
+
+server.use(requestLogger);
 server.use(bodyParser.json());
 server.use('/api', expressJwt({ secret: config.jwtSecret }));
 
@@ -35,5 +40,5 @@ decksHandler.init(server);
 createDeckHandler.init(server);
 
 server.listen(8080, function() {
-    console.log('starting server on port 8080');
+    log.info('Listening on port 8080');
 });
