@@ -5,9 +5,7 @@ let MongoClient = require('../mongoClient'),
 
 module.exports = {
   get() {
-    return MongoClient.connect()
-      .flatMap(onConnection)
-      .subscribe(onResult, onError, onComplete);
+    return MongoClient.connect().flatMap(onConnection);
   }
 };
 
@@ -23,16 +21,4 @@ function onConnection(db) {
 
     return () => db.close();
   });
-}
-
-function onResult(collection) {
-  console.log('onResult', collection);
-}
-
-function onError(err) {
-  console.log('Oh noes', err);
-}
-
-function onComplete() {
-  console.log('done.');
 }
