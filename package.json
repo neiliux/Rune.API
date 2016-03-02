@@ -2,7 +2,7 @@
   "name": "rune-api",
   "version": "0.0.1",
   "description": "Backend API for Rune application",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,18 +14,16 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.2",
-    "body-parser": "^1.14.2",
     "bunyan": "^1.7.0",
-    "express": "^4.13.3",
-    "express-jwt": "^3.3.0",
-    "json": "^9.0.3",
     "jsonwebtoken": "^5.7.0",
+    "lodash": "^4.0.0",
     "mongodb": "^2.1.4",
     "request": "^2.69.0",
+    "restify": "^4.0.4",
+    "restify-jwt": "^0.4.0",
     "rx": "^4.0.8"
   },
   "devDependencies": {
-    "lodash": "^4.0.0",
     "nodemon": "^1.8.1"
   }
 }
