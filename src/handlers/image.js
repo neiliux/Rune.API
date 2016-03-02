@@ -1,14 +1,22 @@
-var async = require('async');
-var request = require('request');
-var fs = require('fs');
-var config = require('./config');
-var imageHandler = {};
-var host;
-var sendFileOptions = {
+'use strict';
+
+let async = require('async');
+let request = require('request');
+let fs = require('fs');
+let config = require('../../config');
+let sendFileOptions = {
     root: config.imagePath
 };
-var jpegRegEx = new RegExp('jpeg|jpg', 'i');
-var pngRegEx = new RegExp('png', 'i');
+let jpegRegEx = /jpeg|jpg/i;
+let pngRegEx = /png/i;
+
+module.exports = {
+  get: (req, res, next) => {
+    let id = req.params.id;
+    fetchImage(id, res);
+    next();
+  }
+}
 
 function getFileInformation(path) {
     try {
@@ -19,11 +27,11 @@ function getFileInformation(path) {
 }
 
 function fileExists(path) {
-    var statInfo = getFileInformation(path);
+    let statInfo = getFileInformation(path);
     if (!statInfo) {
         return null;
     }
-    
+
     return statInfo.isFile();
 }
 
@@ -31,25 +39,16 @@ function sendImage(fileName, response) {
     response.sendFile(fileName, sendFileOptions);
 }
 
-function wireEndpoints() {
-    host.get('/mtgImage/:id', getImageHandler);
-}
-
-function getImageHandler(req, res) {
-    var id = req.params.id;
-    fetchImage(id, res);
-}
-
 function fetchImage(multiverseId, response) {
-    var id = multiverseId;
-  
+    let id = multiverseId;
+
     if (!multiverseId || id === "back") {
         sendImage('back.jpg', response);
         return;
     }
 
-    var pngFilename = id + '.png';
-    var jpgFilename = id + '.jpg'; 
+    let pngFilename = id + '.png';
+    let jpgFilename = id + '.jpg';
 
     if (fileExists(config.imagePath + pngFilename)) {
         sendImage(pngFilename, response);
@@ -63,14 +62,14 @@ function fetchImage(multiverseId, response) {
 
     async.waterfall([
         function(callback) {
-            request('http://gatherer.wizards.com/Handlers/image.ashx?multiverseid=' + id + '&type=card',
+            request(`http://gatherer.wizards.com/Handlers/image.ashx?multiverseid=${id}&type=card`,
                     { encoding: 'binary' },
                 function(error, response, body) {
                     callback(null, body, response.headers['content-type']);
                 });
         },
         function(imageBytes, contentType, callback) {
-            var fileName = id;
+            let fileName = id;
 
             if (jpegRegEx.test(contentType)) {
                 fileName += '.png';
@@ -86,10 +85,3 @@ function fetchImage(multiverseId, response) {
         sendImage(results, response);
     });
 }
-
-imageHandler.init = function(server) {
-    host = server;
-    wireEndpoints();
-}
-
-module.exports = imageHandler;
