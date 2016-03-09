@@ -1,43 +1,29 @@
 'use strict';
 
-let config   = require('./config.json'),
+const config = require('./config.json'),
   extractor  = require('./file-extractor'),
-  downloader = require('./file-download'),
+  downloader = require('./file-downloader'),
   db         = require('./db'),
-  dbClose    = require('./db-close')
-  dbDrop     = require('./db-drop'),
-  dbInsert   = require('./db-insert');
+  setParser  = require('./set-parser');
 
-let cards = [ ];
+// card file
+//  -> download file
+//  -> extract file
+//  -> get file path
 
-downloader(config.source)
-  .flatMap(extractor('output'))
-  .flatMap(parseCards)
-  .subscribe(updateDb);
+// db
+//  -> connect
+//  -> drop collection
+//  -> insert sets
+//  -> insert cards
 
-function updateDb(sets) {
-  db(config.database)
-    .flatMap(dbDrop('sets'))
-    .flatMap(dbInsert('sets', sets))
-    .flatMap(dbClose)
-    .subscribe(
-      () => console.log('Done.')
-    );
-}
+let setStream = downloader(config.source)
+  .flatMap(extractor)
+  .flatMap(setParser);
 
-function parseCards(jsonFilePath) {
-  return Observable.create((subscriber) => {
-    fs.readFile(jsonFilePath, (err, { encoding: 'utf8' } data) => {
-      if (err) {
-        subscriber.onError(err);
-      }
+// let dbStream = db(config.db);
 
-      let sets = Object.keys(data).map((setCode) => {
-        return data[setCode];
-      });
-      subscriber.onNext(sets);
-
-      subscriber.onCompleted();
-    });
-  });
-}
+setStream.subscribe(
+  console.log,
+  console.error
+);
