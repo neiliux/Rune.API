@@ -11,7 +11,7 @@ module.exports = (collectionName) => {
       data = dbData[1];
 
     return Observable.create((subscriber) => {
-      log.info(`Inserting data into "${collectionName}"`);
+      log.debug(`Inserting data into "${collectionName}"`);
       db.collection(collectionName).insertOne(data, (err, db) => {
         if (err) {
           subscriber.onError(err);

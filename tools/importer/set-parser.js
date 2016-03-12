@@ -5,7 +5,7 @@ const fs       = require('fs'),
   StreamObject = require('stream-json/utils/StreamObject'),
   bunyan       = require('bunyan');
 
-let log = bunyan.createLogger({ name: 'setParse', level: 'debug' });
+let log = bunyan.createLogger({ name: 'setParse' });
 
 module.exports = (filePath) => {
   return Observable.create((subscriber) => {
@@ -14,7 +14,7 @@ module.exports = (filePath) => {
     stream.output.on('err', subscriber.onError.bind(subscriber));
 
     stream.output.on('data', (object) => {
-      log.debug(`Parsed set ${object.key}`);
+      log.info(`Parsed set ${object.key}`);
       subscriber.onNext(object.value);
     });
 
