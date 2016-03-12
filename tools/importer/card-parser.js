@@ -1,11 +1,11 @@
 'use strict';
 
-const fs       = require('fs'),
-  Observable   = require('rx').Observable,
-  StreamObject = require('stream-json/utils/StreamObject'),
-  bunyan       = require('bunyan');
+const Observable = require('rx').Observable,
+  StreamObject   = require('stream-json/utils/StreamObject'),
+  fs             = require('fs'),
+  bunyan         = require('bunyan');
 
-let log = bunyan.createLogger({ name: 'setParse' });
+const log = bunyan.createLogger({ name: 'cardParser' });
 
 module.exports = (filePath) => {
   return Observable.create((subscriber) => {
@@ -14,7 +14,7 @@ module.exports = (filePath) => {
     stream.output.on('error', subscriber.onError.bind(subscriber));
 
     stream.output.on('data', (object) => {
-      log.info(`Parsed set ${object.key}`);
+      log.info(`Parsed card ${object.key}`);
       subscriber.onNext(object.value);
     });
 

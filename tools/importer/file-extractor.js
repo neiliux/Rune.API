@@ -6,26 +6,26 @@ const unzip  = require('unzip'),
   path       = require('path'),
   bunyan     = require('bunyan');
 
-const fileName = 'AllSets-x.json';
 const log = bunyan.createLogger({ name: 'extract' });
 
-module.exports = (fileStream) => {
-  return Observable.fromNodeCallback(tmp.dir)()
-    .map((fileMeta) => {
-      log.info(`Extracting into "${fileName}"`);
-      let tmpDir = fileMeta[0];
-      let filePath = path.join(tmpDir, fileName);
-      return {
-        dir:    tmpDir,
-        file:   filePath,
-        stream: fileStream
-      };
-    })
-    .flatMap(extractFile);
+module.exports = (fileName) => {
+  return (fileStream) => {
+    return Observable.fromNodeCallback(tmp.dir)()
+      .map((fileMeta) => {
+        let tmpDir = fileMeta[0];
+        let filePath = path.join(tmpDir, fileName);
+        return {
+          dir:    tmpDir,
+          file:   filePath,
+          stream: fileStream
+        };
+      })
+      .flatMap(extractFile);
+  };
 };
 
 function extractFile(data) {
-  log.debug(`Extracting data to ${data.dir}`);
+  log.info(`Extracting into "${data.file}"`);
   let outStream = data.stream.pipe(unzip.Extract({ path: data.dir }));
   return fromWritableStream(outStream)
     .map((stream) => data.file);
