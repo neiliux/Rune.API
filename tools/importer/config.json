@@ -1,4 +1,4 @@
 {
-  "db": "mongodb://localhost:27017",
+  "db": "mongodb://localhost:27017/rune",
   "source": "http://samnoedel.com/AllSets-x.json.zip"
 }

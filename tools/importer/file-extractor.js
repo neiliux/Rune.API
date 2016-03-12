@@ -3,13 +3,16 @@
 const unzip  = require('unzip'),
   Observable = require('rx').Observable,
   tmp        = require('tmp'),
-  path       = require('path');
+  path       = require('path'),
+  bunyan     = require('bunyan');
 
 const fileName = 'AllSets-x.json';
+const log = bunyan.createLogger({ name: 'extract' });
 
 module.exports = (fileStream) => {
   return Observable.fromNodeCallback(tmp.dir)()
     .map((fileMeta) => {
+      log.info(`Extracting into "${fileName}"`);
       let tmpDir = fileMeta[0];
       let filePath = path.join(tmpDir, fileName);
       return {
@@ -22,6 +25,7 @@ module.exports = (fileStream) => {
 };
 
 function extractFile(data) {
+  log.debug(`Extracting data to ${data.dir}`);
   let outStream = data.stream.pipe(unzip.Extract({ path: data.dir }));
   return fromWritableStream(outStream)
     .map((stream) => data.file);
