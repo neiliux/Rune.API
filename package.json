@@ -23,11 +23,11 @@
     "restify": "^4.0.4",
     "restify-jwt": "^0.4.0",
     "rx": "^4.0.8",
+    "scrypt": "^6.0.1",
     "stream-json": "^0.4.1",
     "tmp": "0.0.28",
-    "unzip": "^0.1.11"
-  },
-  "devDependencies": {
-    "nodemon": "^1.8.1"
+    "unzip": "^0.1.11",
+    "validate": "^3.0.1",
+    "validator": "^5.1.0"
   }
 }
