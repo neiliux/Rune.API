@@ -1,24 +1,12 @@
-var client = {};
-var mongoClient = require('mongodb').MongoClient;
+'use strict';
 
-var url = 'mongodb://localhost:27017/test';
+let MongoClient = require('mongodb').MongoClient,
+  Observable = require('rx').Observable;
 
-client.connect = function(success, error) {
-    mongoClient.connect(url, function(err, db) {
-        if (err) {
-            console.log('error');
-            if (error) {
-                error(err);
-            }
-            return;
-        }
+let url = 'mongodb://localhost:27017/rune';
 
-        success(db);
-    });
-};
-
-client.close = function(db) {
-    db.close();
-};
-
-module.exports = client;
+module.exports = {
+  connect: function() {
+    return Observable.fromNodeCallback(MongoClient.connect)(url);
+  }
+}
