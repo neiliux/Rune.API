@@ -4,6 +4,7 @@
 
 ```
 POST /users
+Content-Type: application/json
 {
   "username": "sam",
   "password": "sureDoLoveTacos",

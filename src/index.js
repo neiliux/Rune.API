@@ -22,6 +22,11 @@ registrar.register('/image/:id', require('./handlers/image'));
 registrar.register('/decks', require('./handlers/decks'));
 registrar.register('/auth', require('./handlers/auth'));
 
+server.on('after', (req, res, route, err) => {
+  let method = err ? 'error' : 'info';
+  log[method](`${req.method} ${res.statusCode} ${req.path()}`);
+});
+
 server.listen(config.port, function() {
     log.info(`Listening on port ${config.port}`);
 });

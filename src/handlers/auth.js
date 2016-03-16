@@ -28,7 +28,9 @@ module.exports = {
         (success) => {
           let tokenData = { username: username };
           let token = jwt.sign(tokenData, config.jwtSecret, { expiresIn: expires });
-          res.send(token);
+          res.send({
+            token: token
+          });
           next();
         }, next);
   }
