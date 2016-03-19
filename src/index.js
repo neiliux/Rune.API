@@ -16,8 +16,8 @@ server.use(restify.bodyParser());
 
 let registrar = new HandlerRegistrar(server);
 registrar.register('/users', require('./handlers/user-browse'));
-registrar.register('/collections/:userId', require('./handlers/collection-browse'));
-// registrar.register('/collections/:userId/:collectionId', require('./handlers/collection'));
+registrar.register('/collections/', require('./handlers/collection-browse'));
+registrar.register('/collections/:userId/:collectionId', require('./handlers/collection'));
 registrar.register('/image/:id', require('./handlers/image'));
 registrar.register('/decks', require('./handlers/decks'));
 registrar.register('/auth', require('./handlers/auth'));
@@ -29,6 +29,11 @@ server.on('after', (req, res, route, err) => {
   } else {
     log.info(msg);
   }
+});
+
+server.on('uncaughtException', (req, res, route, err) => {
+  log.error(err);
+  res.send(err);
 });
 
 server.listen(config.port, function() {
