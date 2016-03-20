@@ -2,7 +2,8 @@
 
 ### Hitting Endpoints
 
-The only things you can hit without a jwt are /auth and creating a new user.
+The only things you can hit without a jwt are /auth and creating a new user. If
+you are sending data, you must set the `Content-Type` header.
 
 ```
 GET /collections/sam
@@ -34,11 +35,19 @@ Content-Type: application/json
 
 ### Collections
 
+Get a collection
+
+```
+GET /collections/sam/super_collection
+Authentication: Bearer ...
+```
+
 Create a collection
 
 ```
 POST /collections
 Authentication: Bearer ...
+Content-Type: application/json
 {
   "name": "super_collection",
   "description": "My super collection"
@@ -52,6 +61,7 @@ from the collection.
 ```
 PATCH /collections/sam/super_collection
 Authentication: Bearer ...
+Content-Type: application/json
 {
   "cards": [
     {
