@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken'),
   Observable = require('rx').Observable,
   userRepo = require('../repositories/user');
 
-const expires = 60 * 100;
+const expires = 60 * 60 * 24; // 24 hours
 
 module.exports = {
   post: (req, res, next) => {

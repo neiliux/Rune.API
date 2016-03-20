@@ -9,8 +9,11 @@ module.exports = {
   get: (username, collectionName) => {
     return MongoClient.connect().flatMap(getCollection(username, collectionName));
   },
-  create: (collection) => {
+  create: collection => {
     return MongoClient.connect().flatMap(createCollection(collection));
+  },
+  save: collection => {
+    return MongoClient.connect().flatMap(saveCollection(collection));
   }
 };
 
@@ -27,4 +30,12 @@ function getCollection(username, collectionName) {
     let query = db.collection(COLLECTION_COLLECTION).find(criteria).limit(1);
     return Observable.fromNodeCallback(query.next, query)();
   }
+}
+
+function saveCollection(newCollection) {
+  return (db) => {
+    let criteria = { username: newCollection.username, name: newCollection.name };
+    let query = db.collection(COLLECTION_COLLECTION);
+    return Observable.fromNodeCallback(query.findOneAndReplace, query)(criteria, newCollection);
+  };
 }
