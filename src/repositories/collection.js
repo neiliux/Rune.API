@@ -1,6 +1,6 @@
 'use strict';
 
-const MongoClient = require('../mongoClient'),
+const MongoClient = require('./mongoClient'),
   Observable = require('rx').Observable;
 
 module.exports = {
