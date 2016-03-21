@@ -1,6 +1,6 @@
 'use strict';
 
-let mongoClient = require('../mongo-client');
+let mongoClient = require('../repositories/mongo-client');
 
 module.exports = {
   post: (req, res, next) => {
