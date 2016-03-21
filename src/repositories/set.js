@@ -16,7 +16,8 @@ module.exports = {
 function getSet(set) {
   return MongoClient.connect().flatMap(db => {
     let criteria = { code: set };
-    let query = db.collection(SET_COLLECTION).find(criteria).limit(1);
+    let fields = { _id: 0, name: 1, code: 1, releaseDate: 1, block: 1, onlineOnly: 1, 'cards.name': 1, 'cards.number': 1 };
+    let query = db.collection(SET_COLLECTION).find(criteria, fields).limit(1);
     return Observable.fromNodeCallback(query.next, query)();
   });
 }
