@@ -5,6 +5,7 @@ const collectionRepo = require('../repositories/collection'),
   validateCards = require('../validators/card'),
   _ = require('lodash'),
   cardRepo = require('../repositories/card'),
+  permissions = require('../services/permissions'),
   Observable = require('rx').Observable;
 
 module.exports = {
@@ -18,6 +19,8 @@ module.exports = {
     if (errors && errors.length) {
       return next(errors[0]);
     }
+
+    permissions.requireUser(req, req.params['userId']);
 
     // Validate cards & sets
     let cardNames = _.map(req.body.cards, 'name');
