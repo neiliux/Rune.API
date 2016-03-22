@@ -16,7 +16,6 @@ module.exports = {
     }
 
     collection.username = username;
-    collection.created = new Date();
 
     let docSource = repo
       .get(username, collection.name)
