@@ -4,7 +4,8 @@
   "description": "Backend API for Rune application",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "import": "node tools/importer/index.js"
   },
   "repository": {
     "type": "git",
@@ -14,14 +15,17 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.2",
-    "bunyan": "^1.7.0",
+    "bunyan": "^1.7.1",
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.0.0",
     "mongodb": "^2.1.4",
     "request": "^2.69.0",
     "restify": "^4.0.4",
     "restify-jwt": "^0.4.0",
-    "rx": "^4.0.8"
+    "rx": "^4.0.8",
+    "stream-json": "^0.4.1",
+    "tmp": "0.0.28",
+    "unzip": "^0.1.11"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
