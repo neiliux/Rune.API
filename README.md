@@ -16,6 +16,7 @@ Get all sets
 
 ```
 GET /sets
+Authorization: Bearer ...
 ```
 
 Get a specific set, including all cards in the set. To find the ID of a
@@ -24,6 +25,22 @@ ODY for Odyssey
 
 ```
 GET /sets/:id
+Authorization: Bearer ...
+```
+
+### Cards
+
+Gets a specific card. If a set parameter is provided, data relevant to that
+printing (e.g. the artist) will be returned in addition to the standard info.
+
+```
+GET /cards/:name
+Authorization: Bearer ...
+```
+
+```
+GET /cards/:name?set=:set
+Authorization: Bearer ...
 ```
 
 ### Users
