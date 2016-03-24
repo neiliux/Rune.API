@@ -1,26 +1,31 @@
 'use strict';
 
-let config = require('../config');
-let restify = require('restify');
-let jwt = require('restify-jwt');
-let mtgJson = require('../mtgjson.json');
-let bunyan = require('bunyan');
-let log = bunyan.createLogger({ name: 'rune' });
-let HandlerRegistrar = require('./handlerRegistrar');
+const config       = require('../config'),
+  restify          = require('restify'),
+  jwt              = require('restify-jwt'),
+  bunyan           = require('bunyan'),
+  log              = bunyan.createLogger({ name: 'rune' }),
+  HandlerRegistrar = require('./handler-registrar');
 
 log.info('Starting up server...');
 
 let server = restify.createServer();
-server.use(jwt({ secret: config.jwtSecret }));
+server.use(jwt({ secret: config.jwtSecret }).unless({ path: ['/users', '/auth'] }));
 server.use(restify.CORS());
 server.use(restify.bodyParser());
 
 let registrar = new HandlerRegistrar(server);
-registrar.register('/collections', require('./handlers/collection'));
-registrar.register('/search', require('./handlers/search')(mtgJson));
+registrar.register('/users', require('./handlers/user-browse'));
+registrar.register('/collections/:userId', require('./handlers/collection-browse'));
+// registrar.register('/collections/:userId/:collectionId', require('./handlers/collection'));
 registrar.register('/image/:id', require('./handlers/image'));
 registrar.register('/decks', require('./handlers/decks'));
 registrar.register('/auth', require('./handlers/auth'));
+
+server.on('after', (req, res, route, err) => {
+  let method = err ? 'error' : 'info';
+  log[method](`${req.method} ${res.statusCode} ${req.path()}`);
+});
 
 server.listen(config.port, function() {
     log.info(`Listening on port ${config.port}`);
