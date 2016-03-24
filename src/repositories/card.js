@@ -16,11 +16,12 @@ module.exports = {
 
 function find(cardName, set) {
   return db => {
+    let fields = { _id: 0 };
     let criteria = { name: cardName };
     if (set) {
       criteria['printings'] = { $elemMatch: { $eq: set } }
     }
-    let query = db.collection(CARD_COLLECTION).find(criteria);
+    let query = db.collection(CARD_COLLECTION).find(criteria, fields);
     return Observable.fromNodeCallback(query.next, query)();
   };
 }
