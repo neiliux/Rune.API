@@ -25,19 +25,22 @@ registrar.register('/sets', require('./handlers/set-browse'));
 registrar.register('/sets/:id', require('./handlers/set'));
 
 server.on('after', (req, res, route, err) => {
-  let msg = `${req.method} ${res.statusCode} ${req.path()}`;
-  if (err) {
-    log.error(err, msg);
-  } else {
-    log.info(msg);
-  }
+  logRequest(req, res, err);
 });
 
 server.on('uncaughtException', (req, res, route, err) => {
-  log.error(err);
+  logRequest(req, res, err);
   res.send(err);
 });
 
 server.listen(config.port, function() {
     log.info(`Listening on port ${config.port}`);
 });
+
+function logRequest(req, res, err) {
+  let level = err ? 'error' : 'info';
+  if (err) {
+    log.error(err);
+  }
+  log[level]({ method: req.method, statusCode: res.statusCode, path: req.path() });
+}
