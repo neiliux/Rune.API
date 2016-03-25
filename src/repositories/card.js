@@ -1,6 +1,6 @@
 'use strict';
 
-const MongoClient = require('../mongo-client'),
+const MongoClient = require('./mongo-client'),
   Observable = require('rx').Observable;
 
 const CARD_COLLECTION = 'cards';

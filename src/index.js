@@ -21,6 +21,8 @@ registrar.register('/collections/:userId/:collectionId', require('./handlers/col
 registrar.register('/image/:id', require('./handlers/image'));
 registrar.register('/decks', require('./handlers/decks'));
 registrar.register('/auth', require('./handlers/auth'));
+registrar.register('/sets', require('./handlers/set-browse'));
+registrar.register('/sets/:id', require('./handlers/set'));
 
 server.on('after', (req, res, route, err) => {
   let msg = `${req.method} ${res.statusCode} ${req.path()}`;

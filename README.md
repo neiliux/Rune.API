@@ -10,6 +10,22 @@ GET /collections/sam
 Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNhbSIsImlhdCI6MTQ1NzkyMzE4MywiZXhwIjoxNDU3OTI5MTgzfQ.1OpxoDv7yeqxxOCslGi-l2I_ZBYgq34Vrq-eDeG_z-I
 ```
 
+### Sets
+
+Get all sets
+
+```
+GET /sets
+```
+
+Get a specific set, including all cards in the set. To find the ID of a
+specific set, use the `code` field from the sets browse endpoint, e.g.
+ODY for Odyssey
+
+```
+GET /sets/:id
+```
+
 ### Users
 
 ```
