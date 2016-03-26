@@ -10,6 +10,9 @@ module.exports = {
     return set
       ? getSet(set)
       : allSets();
+  },
+  getCard: (set, cardName) => {
+    return MongoClient.connect().flatMap(getCard(set, cardName));
   }
 };
 
@@ -28,4 +31,13 @@ function allSets() {
     let query = db.collection(SET_COLLECTION).find({ }, fields);
     return Observable.fromNodeCallback(query.toArray, query)();
   });
+}
+
+function getCard(set, cardName) {
+  return db => {
+    let criteria = { code: set, 'cards.name': cardName };
+    let fields = { 'cards.$': 1 };
+    let query = db.collection(SET_COLLECTION).find(criteria, fields);
+    return Observable.fromNodeCallback(query.next, query)();
+  }
 }
