@@ -13,8 +13,10 @@ let server = restify.createServer();
 server.use(jwt({ secret: config.jwtSecret }).unless({ path: ['/users', '/auth'] }));
 server.use(restify.CORS());
 server.use(restify.bodyParser());
+server.use(restify.queryParser({ mapParams: false }));
 
 let registrar = new HandlerRegistrar(server);
+registrar.register('/cards/:id', require('./handlers/card'));
 registrar.register('/users', require('./handlers/user-browse'));
 registrar.register('/collections/', require('./handlers/collection-browse'));
 registrar.register('/collections/:userId/:collectionId', require('./handlers/collection'));
