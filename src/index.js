@@ -20,7 +20,6 @@ registrar.register('/cards/:id', require('./handlers/card'));
 registrar.register('/users', require('./handlers/user-browse'));
 registrar.register('/collections/', require('./handlers/collection-browse'));
 registrar.register('/collections/:userId/:collectionId', require('./handlers/collection'));
-registrar.register('/image/:id', require('./handlers/image'));
 registrar.register('/decks', require('./handlers/decks'));
 registrar.register('/auth', require('./handlers/auth'));
 registrar.register('/sets', require('./handlers/set-browse'));
