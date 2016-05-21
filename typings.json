@@ -1,0 +1,12 @@
+{
+  "ambientDependencies": {
+    "bunyan": "registry:dt/bunyan#0.0.0+20160412155112",
+    "mongodb": "registry:dt/mongodb#2.1.0+20160425144419",
+    "node": "registry:dt/node#4.0.0+20160501135006",
+    "restify": "registry:dt/restify#2.0.0+20160425141054",
+    "validator": "registry:dt/validator#4.5.1+20160316155526"
+  },
+  "dependencies": {
+    "jsonwebtoken": "registry:npm/jsonwebtoken#5.5.4+20160208220328"
+  }
+}

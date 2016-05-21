@@ -1,9 +1,15 @@
-'use strict';
+import * as validator from 'validator';
+/* tslint:disable:no-require-imports */
+import validate = require('validate');
+/* tslint:enable:no-require-imports */
 
-const schema = require('validate'),
-  validator = require('validator');
+export class User {
+  username: string;
+  email: string;
+  password: string;
+}
 
-const userSchema = schema({
+const SCHEMA = {
   username: {
     type: 'string',
     required: true,
@@ -22,8 +28,13 @@ const userSchema = schema({
     match: /^.{15,}$/,
     message: 'Passwords must be at least 15 characters long'
   }
-});
-
-module.exports = (user) => {
-  return userSchema.validate(user);
 };
+
+const userValidatorFn = validate(SCHEMA);
+
+export function userValidator(user: User) {
+  return userValidatorFn.validate(user);
+};
+
+
+export var USER_SCHEMA = SCHEMA;

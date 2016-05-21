@@ -1,9 +1,9 @@
-'use strict';
 
+import * as restify from 'restify';
+import * as jwt from 'restify-jwt';
+import * as bunyan from 'bunyan';
+import {registra}
 const config       = require('../config'),
-  restify          = require('restify'),
-  jwt              = require('restify-jwt'),
-  bunyan           = require('bunyan'),
   log              = bunyan.createLogger({ name: 'rune' }),
   HandlerRegistrar = require('./handler-registrar');
 
