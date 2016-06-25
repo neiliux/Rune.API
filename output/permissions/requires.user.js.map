@@ -1,1 +1,0 @@
-{"version":3,"file":"requires.user.js","sourceRoot":"","sources":["../../src/permissions/requires.user.ts"],"names":[],"mappings":";AAAA,0BAA6B,SAAS,CAAC,CAAA;AAGvC,qBAA4B,GAAe,EAAE,QAAgB;IAC3D,EAAE,CAAC,CAAC,GAAG,CAAC,IAAI,CAAC,QAAQ,KAAK,QAAQ,CAAC,CAAC,CAAC;QACnC,MAAM,IAAI,wBAAc,EAAE,CAAC;IAC7B,CAAC;AACH,CAAC;AAJe,mBAAW,cAI1B,CAAA"}
