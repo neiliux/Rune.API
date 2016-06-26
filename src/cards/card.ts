@@ -6,6 +6,7 @@ export interface CardList extends Array<Card> {}
 
 export class Card {
     name: string;
+    multiverseId: string;
     set: string;
     quantity: number;
     printings: string[];

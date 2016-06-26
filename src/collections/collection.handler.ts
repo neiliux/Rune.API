@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {BadRequestError, ConflictError, Next, NotFoundError, Request, Response} from 'restify';
 import {collectionValidator} from './collection';
 
-export class CollectionHandlers {
+export class CollectionHandler {
 
   constructor(private collectionRepo: CollectionRepository, private cardRepo: CardRepository) {}
 
