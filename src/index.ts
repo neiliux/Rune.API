@@ -1,8 +1,9 @@
 
 import * as restify from 'restify';
-import * as jwt from 'restify-jwt';
+//import * as jwt from 'restify-jwt';
 import * as bunyan from 'bunyan';
-import {registra}
+var reflect = require('reflect-metadata');
+
 const config       = require('../config'),
   log              = bunyan.createLogger({ name: 'rune' }),
   HandlerRegistrar = require('./handler-registrar');
@@ -10,7 +11,7 @@ const config       = require('../config'),
 log.info('Starting up server...');
 
 let server = restify.createServer();
-server.use(jwt({ secret: config.jwtSecret }).unless({ path: ['/users', '/auth'] }));
+//server.use(jwt({ secret: config.jwtSecret }).unless({ path: ['/users', '/auth'] }));
 server.use(restify.CORS());
 server.use(restify.bodyParser());
 server.use(restify.queryParser({ mapParams: false }));

@@ -2,6 +2,7 @@
 import {Deck} from './deck';
 import {MongoClient, DbCollection} from '../clients';
 import {Observable} from 'rxjs';
+//import {Collection} from '../collections/collection';
 
 const DECK_COLLECTION = 'decks';
 
@@ -27,9 +28,9 @@ export class DeckRepository {
   }
 
   private createDeck(deck: Deck): DbCollectionOpFunciton {
-    return (c: DbCollection): Observable<Collection> => {
-      return Observable.fromPromise(c.insertOne(collection)).map((op) => {
-        return op.result.ok > 0 ? collection : null;
+    return (c: DbCollection): Observable<Deck> => {
+      return Observable.fromPromise(c.insertOne(deck)).map((op) => {
+        return op.result.ok > 0 ? deck : null;
       });
     };
   }

@@ -1,11 +1,10 @@
-import {Collection} from './collection';
-import {CollectionRepository} from './collection.repo';
+import {Collection, collectionValidator} from '../collections/collection';
+import {CollectionRepository} from '../collections/collection.repo';
 import {Card, CardList, CardRepository, cardMatchPredicate, validateCardsProperty} from '../cards';
 import {requireUser} from '../permissions';
 import {ApiRequest} from '../util';
 import {Observable} from 'rxjs';
 import {BadRequestError, ConflictError, Next, NotFoundError, Request, Response} from 'restify';
-import {collectionValidator} from './collection';
 
 export class CollectionHandlers {
 
