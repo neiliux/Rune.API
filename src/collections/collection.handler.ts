@@ -6,9 +6,9 @@ import {ApiRequest} from '../util';
 import {Observable} from 'rxjs';
 import {BadRequestError, ConflictError, Next, NotFoundError, Request, Response} from 'restify';
 import {collectionValidator} from './collection';
+import {IHandler} from '../IHandler';
 
-export class CollectionHandler {
-
+export class CollectionHandler implements IHandler {
   constructor(private collectionRepo: CollectionRepository, private cardRepo: CardRepository) {}
 
   get(req: Request, res: Response, next: Next) {
@@ -17,6 +17,31 @@ export class CollectionHandler {
       .subscribe(res.send.bind(res), next, next);
   }
 
+  // create - post
+  post(req: ApiRequest, res: Response, next: Next) {
+    let collection: Collection = req.body;
+    let username: string = req.user.username;
+    let errors = collectionValidator(collection);
+
+    if (errors && errors.length) {
+      let msg = errors[0].message;
+      return next(new BadRequestError(msg));
+    }
+
+    collection.username = username;
+
+    this.collectionRepo
+      .get(username, collection.name)
+      .do(doc => {
+        if (doc) {
+          let msg = `user ${username} already has a collection named ${collection.name}`;
+          throw new ConflictError(msg);
+        }
+      })
+      .flatMap((c: Collection) => this.collectionRepo.create(collection))
+      .subscribe(data => res.send(data), next, next);
+  }
+  
   // update - patch
   update(req: Request, res: Response, next: Next) {
     // Validate request format
@@ -69,30 +94,7 @@ export class CollectionHandler {
         .subscribe(data => res.send(200), next, next);
   }
 
-  // create - post
-  create(req: ApiRequest, res: Response, next: Next) {
-    let collection: Collection = req.body;
-    let username: string = req.user.username;
-    let errors = collectionValidator(collection);
-
-    if (errors && errors.length) {
-      let msg = errors[0].message;
-      return next(new BadRequestError(msg));
-    }
-
-    collection.username = username;
-
-    this.collectionRepo
-      .get(username, collection.name)
-      .do(doc => {
-        if (doc) {
-          let msg = `user ${username} already has a collection named ${collection.name}`;
-          throw new ConflictError(msg);
-        }
-      })
-      .flatMap((c: Collection) => this.collectionRepo.create(collection))
-      .subscribe(data => res.send(data), next, next);
-  }
+  
   private getCollection(username: string, collectionId: string): Observable<Collection> {
     return this.collectionRepo
       .get(username, collectionId)

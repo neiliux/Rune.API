@@ -11,7 +11,12 @@ export class HandlerRegistrar {
 
   public register(uri: string , handler: IHandler) {
      if (handler.get) {
+         console.log('register get', uri);
         this.server.get(uri, handler.get.bind(handler));
+     }
+
+     if (handler.post) {
+        this.server.post(uri, handler.post.bind(handler));
      }
   }
 }

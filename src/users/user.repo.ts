@@ -7,10 +7,9 @@ const USER_COLLECTION = 'users';
 interface QueryFunction<T> {
     (connection: DbCollection): Observable<T>;
 }
-export class UserRepository {
-    constructor(private mongo: MongoClient) {
 
-    }
+export class UserRepository {
+    constructor(private mongo: MongoClient) { }
 
     get(username: string): Observable<User> {
         return this.connect().flatMap((collection: DbCollection): Observable<User> => {
@@ -21,15 +20,23 @@ export class UserRepository {
     }
 
     create(user: User): Observable<User> {
+        console.log('ccb 1');
         return this.connect().flatMap((collection: DbCollection): Observable<User> => {
+            console.log('ccb 2');
             let setPromise = collection.insertOne(user);
-            return Observable.fromPromise(setPromise).map((result: InsertOneResult): User => {
-                if (result.insertedCount !== 1) {
-                    throw new Error('could not create user');
-                }
-
-                return user;
+            return Observable.create(sub => {
+                sub.onNext(user);
+                sub.onCompleted();
             });
+
+            //return Observable.fromPromise(setPromise).map((result: InsertOneResult): User => {
+            //    console.log('ccb 3');
+            //    if (result.insertedCount !== 1) {
+            //        throw new Error('could not create user');
+            //    }
+
+           //     return user;
+           // });
         });
         //return this.connectAndFlatMap(this.dbQuery<Card>({name: name}));
     }
@@ -37,7 +44,6 @@ export class UserRepository {
     private connect(): Observable<DbCollection> {
         return this.mongo.connect(USER_COLLECTION);
     }
-
 }
 /*
 

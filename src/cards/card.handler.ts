@@ -3,12 +3,11 @@ import {SetRepository} from '../sets';
 import {Request, Response, Next, NotFoundError} from 'restify';
 
 export class CardHandler {
-  constructor(private cardRepo: CardRepository, private setRepo: SetRepository) {
+  constructor(private cardRepo: CardRepository, private setRepo: SetRepository) { }
   
-  }
   get(req: Request, res: Response, next: Next) {
-    let cardName = req.params['id'],
-      set = req.query['set'];
+    let cardName = req.query['name'],
+        set = req.query['set'];
 
     let cardSource = set
       ? this.setRepo.getCard(set, cardName)

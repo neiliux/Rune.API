@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Request, Response, Next} from 'restify';
 import {UserRepository} from '../users';
 import {Observable} from 'rxjs';
+import {IHandler} from '../IHandler';
 
 import * as jwt from 'jsonwebtoken';
 /* tslint:disable:no-require-imports */
@@ -12,11 +13,10 @@ var config = require('../../config');
 /* tslint:enable:no-var-requires */
 /* tslint:enable:no-require-imports */
 
-
 const expires = 60 * 60 * 24; // 24 hours
 
 @Injectable()
-export class AuthenticationHandler {
+export class AuthenticationHandler implements IHandler {
   constructor(private userRepo: UserRepository) {}
 
   post(req: Request, res: Response, next: Next) {
